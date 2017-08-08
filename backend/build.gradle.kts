@@ -1,16 +1,36 @@
-import org.gradle.api.tasks.bundling.Jar
-import org.gradle.kotlin.dsl.compile
-import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.kotlin
-import org.gradle.kotlin.dsl.withType
+
+import org.gradle.kotlin.dsl.*
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
+buildscript {
+    repositories {
+        maven { setUrl("https://repo.spring.io/milestone") }
+    }
+
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.0.M3")
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { setUrl("https://repo.spring.io/milestone") }
+    maven { setUrl("https://repo.spring.io/snapshot") }
+}
 
 plugins {
     kotlin("jvm")
+    id("io.spring.dependency-management") version "1.0.3.RELEASE"
+}
+
+apply {
+    plugin("org.springframework.boot")
 }
 
 dependencies {
-    compile(kotlin("stdlib"))
+    compile("org.springframework.boot:spring-boot-starter")
+    compile(kotlin("stdlib-jre8"))
+    compile(kotlin("reflect"))
 }
 
 val project = mapOf(
@@ -20,24 +40,5 @@ val project = mapOf(
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         jvmTarget = "1.8"
-    }
-}
-
-val fatJar = task("fatJar", type = Jar::class) {
-    baseName = "${project.name}-fat"
-    manifest {
-        attributes["Main-Class"] = "com.packtpub.HelloWorldKt"
-    }
-    from(
-        configurations.runtime.map {
-            if (it.isDirectory) it else zipTree(it)
-        }
-    )
-    with(tasks["jar"] as CopySpec)
-}
-
-tasks {
-    "build" {
-        dependsOn(fatJar)
     }
 }
