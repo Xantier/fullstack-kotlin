@@ -1,11 +1,11 @@
 package com.packtpub
 
 interface HelloSayer {
-    fun sayHello()
+    fun sayHello(name: String): String
 }
 
 internal class HelloWorld : HelloSayer {
-    override fun sayHello(){
-        println("Hello World")
-    }
+    override fun sayHello(name: String) =
+        "Hello $name"
+
 }

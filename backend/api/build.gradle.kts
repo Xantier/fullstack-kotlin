@@ -7,5 +7,6 @@ apply {
 dependencies {
     val springBootVersion: String = parent.properties["springBootVersion"] as String
     compile(project(":backend:component"))
-    compile("org.springframework.boot:spring-boot-starter:$springBootVersion")
+    compile("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
+    compile("org.springframework.boot:spring-boot-devtools:$springBootVersion")
 }
