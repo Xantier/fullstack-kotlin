@@ -9,7 +9,7 @@ import org.springframework.context.support.beans
 
 
 @SpringBootApplication
-open class Config(
+class Config(
     private val helloWorld: HelloWorld)
     : CommandLineRunner {
     override fun run(vararg args: String?) {
