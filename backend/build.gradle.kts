@@ -1,45 +1,44 @@
-
 import org.gradle.kotlin.dsl.*
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+plugins {
+    kotlin("jvm")
+}
+
 buildscript {
+    val springBootVersion: String = properties["springBootVersion"] as String
     repositories {
         maven { setUrl("https://repo.spring.io/milestone") }
     }
 
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.0.M3")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
     }
 }
 
-repositories {
-    mavenCentral()
-    maven { setUrl("https://repo.spring.io/milestone") }
-    maven { setUrl("https://repo.spring.io/snapshot") }
-}
+subprojects {
+    repositories {
+        mavenCentral()
+        maven { setUrl("https://repo.spring.io/milestone") }
+        maven { setUrl("https://repo.spring.io/snapshot") }
+    }
 
-plugins {
-    kotlin("jvm")
-    id("io.spring.dependency-management") version "1.0.3.RELEASE"
-    id("org.jetbrains.kotlin.plugin.spring") version embeddedKotlinVersion
-}
+    plugins {
+        kotlin("jvm")
+    }
 
-apply {
-    plugin("org.springframework.boot")
-}
+    apply {
+        plugin("kotlin")
+    }
 
-dependencies {
-    compile("org.springframework.boot:spring-boot-starter")
-    compile(kotlin("stdlib-jre8"))
-    compile(kotlin("reflect"))
-}
+    dependencies {
+        compile(kotlin("stdlib-jre8"))
+        compile(kotlin("reflect"))
+    }
 
-val project = mapOf(
-    name to "backend"
-)
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        jvmTarget = "1.8"
+    tasks.withType<KotlinCompile> {
+        kotlinOptions {
+            jvmTarget = "1.8"
+        }
     }
 }
