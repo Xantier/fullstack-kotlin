@@ -1,12 +1,10 @@
 package com.packtpub
 
-import org.springframework.context.support.GenericApplicationContext
-import org.springframework.context.support.beans
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
 
-class HelloWorldConfig(ctx: GenericApplicationContext){
-    init {
-        beans {
-            bean<HelloWorld>()
-        }.invoke(ctx)
-    }
+@Configuration
+class HelloWorldConfig {
+    @Bean
+    fun helloSayer(): HelloSayer = HelloWorld()
 }
