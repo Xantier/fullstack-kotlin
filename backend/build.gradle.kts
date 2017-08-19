@@ -1,8 +1,9 @@
 import org.gradle.kotlin.dsl.*
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+
 plugins {
-    kotlin("jvm")
+    kotlin("jvm", "1.1.4")
 }
 
 buildscript {
@@ -17,6 +18,7 @@ buildscript {
 }
 
 subprojects {
+    val kotlinVersion = properties["kotlinVersion"] as String
     repositories {
         mavenCentral()
         maven { setUrl("https://repo.spring.io/milestone") }
@@ -24,7 +26,7 @@ subprojects {
     }
 
     plugins {
-        kotlin("jvm")
+        kotlin("jvm", kotlinVersion)
     }
 
     apply {
@@ -32,8 +34,8 @@ subprojects {
     }
 
     dependencies {
-        compile(kotlin("stdlib-jre8"))
-        compile(kotlin("reflect"))
+        compile(kotlin("stdlib-jre8", kotlinVersion))
+        compile(kotlin("reflect", kotlinVersion))
     }
 
     tasks.withType<KotlinCompile> {

@@ -1,5 +1,5 @@
 plugins {
-    id("org.jetbrains.kotlin.plugin.spring") version embeddedKotlinVersion
+    id("org.jetbrains.kotlin.plugin.spring") version "1.1.4"
 }
 apply {
     plugin("org.springframework.boot")
