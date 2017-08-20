@@ -1,5 +1,6 @@
-package com.packtpub
+package com.packtpub.route
 
+import com.packtpub.handler.ViewHandler
 import org.springframework.context.annotation.Bean
 import org.springframework.core.io.ClassPathResource
 import org.springframework.http.MediaType
