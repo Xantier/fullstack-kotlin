@@ -1,5 +1,7 @@
 package com.packtpub
 
+import com.packtpub.route.ApiRoutes
+import com.packtpub.route.ViewRoutes
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.ApplicationContextInitializer
@@ -14,7 +16,8 @@ fun main(args: Array<String>){
     val application = SpringApplication(Config::class.java)
     application.addInitializers(ApplicationContextInitializer<GenericApplicationContext> { ctx ->
         beans{
-            bean<HelloWorldConfig>()
+            bean { ViewRoutes(it.ref()) }
+            bean { ApiRoutes(it.ref()) }
         }(ctx)
     })
     application.run(*args)
