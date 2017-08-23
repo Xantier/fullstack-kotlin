@@ -7,6 +7,6 @@ console.log('Hello World Script Loaded');
 
   var oReq = new XMLHttpRequest();
   oReq.addEventListener('load', reqListener);
-  oReq.open('GET', 'apihello?name=Kotlin Coder');
+  oReq.open('GET', 'api/hello?name=Kotlin Coder');
   oReq.send();
 })();

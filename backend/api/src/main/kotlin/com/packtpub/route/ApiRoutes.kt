@@ -11,8 +11,8 @@ class ApiRoutes(private val apiHandler: ApiHandler) {
     @Bean
     fun apiRouter() =
         router {
-            accept(MediaType.APPLICATION_JSON_UTF8).nest {
-                GET("/apihello", apiHandler::hello)
+            (accept(MediaType.APPLICATION_JSON_UTF8) and "/api").nest {
+                GET("/hello", apiHandler::hello)
             }
         }
 }
