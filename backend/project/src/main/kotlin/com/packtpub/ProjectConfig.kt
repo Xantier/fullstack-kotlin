@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-class HelloWorldConfig {
+class ProjectConfig {
     @Bean
-    fun helloSayer(): HelloSayer = HelloWorld()
+    fun helloSayer(): ProjectService = ProjectServiceImpl()
 }

@@ -1,6 +1,6 @@
 package com.packtpub.route
 
-import com.packtpub.HelloSayer
+import com.packtpub.ProjectService
 import com.packtpub.util.json
 import org.springframework.context.annotation.Bean
 import org.springframework.http.MediaType
@@ -9,7 +9,7 @@ import org.springframework.web.reactive.function.server.router
 import reactor.core.publisher.Mono
 
 
-class ApiRoutes(private val helloSayer: HelloSayer) {
+class ApiRoutes(private val projectService: ProjectService) {
 
     @Bean
     fun apiRouter() =
@@ -18,9 +18,7 @@ class ApiRoutes(private val helloSayer: HelloSayer) {
                 GET("/hello") { req ->
                     ServerResponse.ok()
                         .json(Mono.just(
-                            helloSayer.sayHello(
-                                req.queryParam("name").orElse("User")
-                            )
+                            "Implement saving projects here"
                         ))
                 }
             }
