@@ -1,5 +1,7 @@
 package com.packtpub
 
+import com.packtpub.handler.ApiHandler
+import com.packtpub.handler.ExceptionHandler
 import com.packtpub.route.ApiRoutes
 import com.packtpub.route.ViewRoutes
 import org.springframework.boot.SpringApplication
@@ -17,7 +19,9 @@ fun main(args: Array<String>) {
     application.addInitializers(ApplicationContextInitializer<GenericApplicationContext> { ctx ->
         beans {
             bean { ViewRoutes(it.ref()) }
-            bean { ApiRoutes(it.ref(), it.ref()) }
+            bean { ApiHandler(it.ref(), it.ref()) }
+            bean { ApiRoutes(it.ref()) }
+            bean<ExceptionHandler>()
         }(ctx)
     })
     application.run(*args)
