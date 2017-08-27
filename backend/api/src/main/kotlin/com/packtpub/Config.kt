@@ -12,12 +12,12 @@ import org.springframework.context.support.beans
 @SpringBootApplication
 class Config
 
-fun main(args: Array<String>){
+fun main(args: Array<String>) {
     val application = SpringApplication(Config::class.java)
     application.addInitializers(ApplicationContextInitializer<GenericApplicationContext> { ctx ->
-        beans{
+        beans {
             bean { ViewRoutes(it.ref()) }
-            bean { ApiRoutes(it.ref()) }
+            bean { ApiRoutes(it.ref(), it.ref()) }
         }(ctx)
     })
     application.run(*args)

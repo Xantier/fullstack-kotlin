@@ -6,11 +6,11 @@ data class Project(
     val url: String,
     val owner: String,
     val description: String?,
-    val Language: Language,
+    val language: Language,
     val tags: List<String>,
     val license: String?
 )
 
-enum class Language(val label: String) {
-    KOTLIN("Kotlin"), JAVASCRIPT("JS"), JAVA("Java")
+enum class Language {
+    KOTLIN, JAVASCRIPT, JAVA
 }

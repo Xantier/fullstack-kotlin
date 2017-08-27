@@ -13,5 +13,5 @@ inline fun <reified T : Any> ServerResponse.BodyBuilder.json(
 
 inline fun <reified T : Any> ServerResponse.BodyBuilder.htmlView(
     content: Publisher<T>) =
-            contentType(MediaType.TEXT_HTML)
+    contentType(MediaType.TEXT_HTML)
         .body(content)
