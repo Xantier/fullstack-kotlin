@@ -5,10 +5,10 @@ data class Project(
     val name: String,
     val url: String,
     val owner: String,
-    val description: String?,
     val language: Language,
-    val tags: List<String>,
-    val license: String?
+    val description: String? = null,
+    val tags: List<String> = listOf(),
+    val license: String? = null
 )
 
 enum class Language {

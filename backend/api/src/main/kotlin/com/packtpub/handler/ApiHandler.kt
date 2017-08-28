@@ -1,8 +1,6 @@
 package com.packtpub.handler
 
-import com.packtpub.FieldErrorDTO
-import com.packtpub.ProjectDTO
-import com.packtpub.ProjectService
+import com.packtpub.*
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
 import org.springframework.web.reactive.function.server.body
@@ -27,7 +25,9 @@ class ApiHandler(private val validator: Validator,
             }
             .flatMap {
                 when (it.fieldErrors) {
-                    null -> ServerResponse.ok().body(Mono.just(it))
+                    null -> ServerResponse.ok().body(Mono.just(
+                        projectService.saveProject(it.toProject()).toDto()
+                    ))
                     else -> ServerResponse.unprocessableEntity().body(Mono.just(it))
                 }
             }

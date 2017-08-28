@@ -1,17 +1,11 @@
 package com.packtpub.views
 
+import com.packtpub.ProjectDTO
 import kotlinx.html.*
 import kotlinx.html.stream.createHTML
 
 
-fun index(header: String): String {
-
-    val links = mapOf(
-        "Kotlin" to "https://github.com/JetBrains/kotlin",
-        "Spring" to "https://github.com/spring-projects/spring-framework",
-        "React" to "https://github.com/facebook/react",
-        "Full Stack Development" to "https://github.com/Xantier/fullstack-kotlin"
-    )
+fun index(header: String, projects: List<ProjectDTO>): String {
     return createHTML(true).html {
         head {
             title = "Full Stack Kotlin"
@@ -23,11 +17,11 @@ fun index(header: String): String {
             p {
                 +"Our Resouces: "
                 ul {
-                    links.map { (name, url) ->
+                    projects.map { (name, url, owner) ->
                         li {
                             a(url) {
                                 target = ATarget.blank
-                                +name
+                                +"$name by $owner"
                             }
                         }
                     }

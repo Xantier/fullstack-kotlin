@@ -16,7 +16,10 @@ data class ProjectDTO(
     val owner: String,
 
     val language: Language
-): Validatable()
+) : Validatable()
+
+fun ProjectDTO.toProject() = Project(name, url, owner, language)
+fun Project.toDto() = ProjectDTO(name, url, owner, language)
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 open class Validatable(
