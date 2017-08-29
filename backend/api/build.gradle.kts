@@ -12,5 +12,5 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-webflux:$springBootVersion")
     compile("org.springframework.boot:spring-boot-devtools:$springBootVersion")
     compile("org.jetbrains.kotlinx:kotlinx-html-jvm:$kotlinxHtmlVersion")
-    compile ("org.hibernate:hibernate-validator:$hibernateValidatorVersion")
+    compile("org.hibernate:hibernate-validator:$hibernateValidatorVersion")
 }
