@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import org.hibernate.validator.constraints.URL
 import javax.validation.constraints.Size
 
-
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class ProjectDTO(
     @get:Size(min = 2)
     val name: String,
@@ -15,11 +15,12 @@ data class ProjectDTO(
     @get:Size(min = 2)
     val owner: String,
 
-    val language: Language
+    val language: Language,
+    val id: Long? = null
 ) : Validatable()
 
 fun ProjectDTO.toProject() = Project(name, url, owner, language)
-fun Project.toDto() = ProjectDTO(name, url, owner, language)
+fun Project.toDto() = ProjectDTO(name, url, owner, language, id)
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 open class Validatable(

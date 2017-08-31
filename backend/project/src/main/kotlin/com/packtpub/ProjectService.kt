@@ -5,13 +5,12 @@ interface ProjectService {
     fun fetchProjects(): List<Project>
 }
 
-internal class ProjectServiceImpl : ProjectService {
-    private var projects: List<Project> = listOf()
+internal class ProjectServiceImpl
+(private val projectRepository: ProjectRepository) : ProjectService {
+    override fun fetchProjects(): List<Project> =
+        projectRepository.findAll().toList()
 
-    override fun fetchProjects(): List<Project> = projects
-    override fun saveProject(project: Project): Project {
-        println(project)
-        projects += project
-        return project
-    }
+    override fun saveProject(project: Project) =
+        projectRepository.save(project)
+
 }
