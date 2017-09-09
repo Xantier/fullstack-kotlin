@@ -18,9 +18,9 @@ class ApiRoutes(private val apiHandler: ApiHandler) : WithLogging() {
                 "/projects".nest {
                     POST("/", apiHandler::handle)
                     GET("/", apiHandler::getProjects)
-                    GET("/{id}", apiHandler::getProject)
                     GET("/owners", apiHandler::getOwners)
                     GET("/byOwner/{name}", apiHandler::getByOwner)
+                    GET("/{id}", apiHandler::getProject)
                 }
             }
         }.filter { request, next ->
