@@ -1,10 +1,6 @@
 package com.packtpub
 
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
-import org.springframework.context.annotation.Primary
 import org.springframework.context.support.BeanDefinitionDsl
-import org.springframework.context.support.GenericApplicationContext
 import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.UserDetailsRepositoryAuthenticationManager
 import org.springframework.security.config.web.server.HttpSecurity
@@ -19,17 +15,9 @@ import org.springframework.web.server.WebFilter
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
-@Configuration
-class UserConfig(private val applicationContext: GenericApplicationContext) {
-
-    @Primary
-    @Bean
-    fun userService(): UserService =
-        UserServiceImpl(applicationContext.getBean(UserRepository::class.java))
-}
-
-
 fun BeanDefinitionDsl.securityBeans() {
+    bean<UserRepository>()
+    bean<UserService> { UserServiceImpl(it.ref()) }
     bean<SecurityWebFilterChain> {
         HttpSecurity.http().authorizeExchange()
             .pathMatchers(HttpMethod.GET, "/api/projects/**").permitAll()
@@ -48,7 +36,6 @@ fun BeanDefinitionDsl.securityBeans() {
             securityContextRepository(WebSessionSecurityContextRepository())
         }
     }
-
     bean {
         UserDetailsRepository { username ->
             Mono.just(it.ref<UserRepository>()

@@ -1,15 +1,8 @@
 package com.packtpub
 
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
-import org.springframework.context.annotation.Primary
-import org.springframework.context.support.GenericApplicationContext
+import org.springframework.context.support.BeanDefinitionDsl
 
-@Configuration
-class ProjectConfig(private val applicationContext: GenericApplicationContext) {
-
-    @Primary
-    @Bean
-    fun projectService(): ProjectService =
-        ProjectServiceImpl(applicationContext.getBean(ProjectRepository::class.java))
+fun BeanDefinitionDsl.projectBeans() {
+    bean<ProjectRepository>()
+    bean<ProjectService> { ProjectServiceImpl(it.ref()) }
 }

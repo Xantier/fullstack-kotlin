@@ -11,6 +11,9 @@ import org.springframework.context.ApplicationContextInitializer
 import org.springframework.context.support.GenericApplicationContext
 import org.springframework.context.support.beans
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity
+import org.springframework.web.reactive.function.server.HandlerStrategies
+import org.springframework.web.reactive.function.server.RouterFunctions
+import org.springframework.web.server.WebHandler
 
 
 @SpringBootApplication
@@ -25,7 +28,16 @@ fun main(args: Array<String>) {
             bean { ApiHandler(it.ref(), it.ref()) }
             bean { ApiRoutes(it.ref()) }
             bean<ExceptionHandler>()
+            projectBeans()
             securityBeans()
+            bean<WebHandler>("webHandler") {
+                RouterFunctions.toWebHandler(
+                    it.ref<ViewRoutes>().viewRouter().and(
+                        it.ref<ApiRoutes>().apiRouter()
+                    ),
+                    HandlerStrategies.builder().build()
+                )
+            }
         }(ctx)
     })
     application.run(*args)
