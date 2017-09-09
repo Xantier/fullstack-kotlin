@@ -1,11 +1,11 @@
 package com.packtpub.views
 
-import com.packtpub.ProjectDTO
+import com.packtpub.ProjectView
 import kotlinx.html.*
 import kotlinx.html.stream.createHTML
 
 
-fun index(header: String, projects: List<ProjectDTO>): String {
+fun index(header: String, projects: List<ProjectView>): String {
     return createHTML(true).html {
         head {
             title = "Full Stack Kotlin"

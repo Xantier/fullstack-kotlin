@@ -19,7 +19,7 @@ data class ProjectDTO(
     val id: Long? = null
 ) : Validatable()
 
-fun ProjectDTO.toProject() = Project(name, url, owner, language)
+fun ProjectDTO.toProject() = Project(name, url, owner, language, id)
 fun Project.toDto() = ProjectDTO(name, url, owner, language, id)
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

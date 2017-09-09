@@ -23,3 +23,5 @@ data class Project(
 enum class Language {
     KOTLIN, JAVASCRIPT, JAVA
 }
+
+data class ProjectView(val name: String, val url: String, val owner: String)

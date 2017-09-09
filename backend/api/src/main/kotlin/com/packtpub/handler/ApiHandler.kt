@@ -31,4 +31,27 @@ class ApiHandler(private val validator: Validator,
                     else -> ServerResponse.unprocessableEntity().body(Mono.just(it))
                 }
             }
+
+    fun getProjects(req: ServerRequest) =
+        ServerResponse.ok().body(
+            Mono.just(projectService.fetchProjects().map { it.toDto() })
+        )
+
+    fun getProject(req: ServerRequest): Mono<ServerResponse> {
+        val id = req.pathVariable("id").toLong()
+        val projectDTO: ProjectDTO? = projectService.fetchProject(id)?.toDto()
+        return if (projectDTO != null) {
+            ServerResponse.ok().body(Mono.just(projectDTO))
+        } else {
+            ServerResponse.notFound().build()
+        }
+    }
+
+    fun getOwners(req: ServerRequest): Mono<ServerResponse> =
+        ServerResponse.ok().body(Mono.just(projectService.fetchAllOwners()))
+
+    fun getByOwner(req: ServerRequest): Mono<ServerResponse> {
+        val name = req.pathVariable("name")
+        return ServerResponse.ok().body(Mono.just(projectService.findByOwner(name).map { it.toDto() }))
+    }
 }

@@ -1,7 +1,6 @@
 package com.packtpub.handler
 
 import com.packtpub.ProjectService
-import com.packtpub.toDto
 import com.packtpub.util.htmlView
 import com.packtpub.views.index
 import org.springframework.web.reactive.function.server.ServerRequest
@@ -15,7 +14,7 @@ class ViewHandler(private val projectService: ProjectService) {
         ServerResponse.ok()
             .htmlView(Mono.just(
                 index("Hello ${req.queryParam("name").orElse("User")}",
-                    projectService.fetchProjects().map { it.toDto() })
+                    projectService.fetchProjectsForView())
             ))
 
 }
