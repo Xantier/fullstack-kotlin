@@ -13,7 +13,7 @@ class ViewHandler(private val projectService: ProjectService) {
     fun handle(req: ServerRequest) =
         ServerResponse.ok()
             .htmlView(Mono.just(
-                index("Hello ${req.queryParam("name").orElse("User")}",
+                index("Hello ${req.queryParam("name").orElse("PacktUser")}",
                     projectService.fetchProjectsForView())
             ))
 

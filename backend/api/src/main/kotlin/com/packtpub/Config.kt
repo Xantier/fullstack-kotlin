@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.ApplicationContextInitializer
 import org.springframework.context.support.GenericApplicationContext
 import org.springframework.context.support.beans
+import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity
 
 
 @SpringBootApplication
@@ -24,7 +25,11 @@ fun main(args: Array<String>) {
             bean { ApiHandler(it.ref(), it.ref()) }
             bean { ApiRoutes(it.ref()) }
             bean<ExceptionHandler>()
+            securityBeans()
         }(ctx)
     })
     application.run(*args)
 }
+
+@EnableWebFluxSecurity
+class SecurityConfig
