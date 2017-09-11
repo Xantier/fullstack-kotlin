@@ -5,7 +5,7 @@ import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface ProjectRepository : CrudRepository<Project, Long>{
+internal interface ProjectRepository : CrudRepository<Project, Long>{
     fun findByOwner(owner: String): List<Project>
 
     @Query("SELECT distinct owner FROM Project")

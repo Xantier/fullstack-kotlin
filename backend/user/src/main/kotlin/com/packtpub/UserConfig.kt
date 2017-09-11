@@ -33,7 +33,9 @@ fun BeanDefinitionDsl.securityBeans() {
     bean<SecurityWebFilterChain> {
         HttpSecurity.http().authorizeExchange()
             .pathMatchers(HttpMethod.GET, "/api/projects/**").permitAll()
-            .pathMatchers(HttpMethod.POST, "/api/posts/**").hasRole("ADMIN")
+            .pathMatchers(HttpMethod.GET, "/login").permitAll()
+            .pathMatchers(HttpMethod.POST, "/login").permitAll()
+            .pathMatchers(HttpMethod.POST, "/api/projects/**").hasRole("ADMIN")
             .anyExchange().authenticated()
             .and()
             .build()

@@ -2,6 +2,7 @@ package com.packtpub
 
 import com.packtpub.handler.ApiHandler
 import com.packtpub.handler.ExceptionHandler
+import com.packtpub.handler.LoginHandler
 import com.packtpub.handler.ViewHandler
 import com.packtpub.route.ApiRoutes
 import com.packtpub.route.ViewRoutes
@@ -21,7 +22,8 @@ fun main(args: Array<String>) {
     application.addInitializers(ApplicationContextInitializer<GenericApplicationContext> { ctx ->
         beans {
             bean { ViewHandler(it.ref()) }
-            bean { ViewRoutes(it.ref()) }
+            bean { LoginHandler(it.ref()) }
+            bean { ViewRoutes(it.ref() ,it.ref()) }
             bean { ApiHandler(it.ref(), it.ref()) }
             bean { ApiRoutes(it.ref()) }
             bean<ExceptionHandler>()
