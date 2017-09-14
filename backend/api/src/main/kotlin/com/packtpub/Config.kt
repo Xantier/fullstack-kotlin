@@ -2,7 +2,6 @@ package com.packtpub
 
 import com.packtpub.handler.ApiHandler
 import com.packtpub.handler.ExceptionHandler
-import com.packtpub.handler.LoginHandler
 import com.packtpub.handler.ViewHandler
 import com.packtpub.route.ApiRoutes
 import com.packtpub.route.ViewRoutes
@@ -11,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.ApplicationContextInitializer
 import org.springframework.context.support.GenericApplicationContext
 import org.springframework.context.support.beans
+import org.springframework.http.HttpMethod
 
 
 @SpringBootApplication
@@ -21,13 +21,16 @@ fun main(args: Array<String>) {
     application.addInitializers(ApplicationContextInitializer<GenericApplicationContext> { ctx ->
         beans {
             bean { ViewHandler(ref()) }
-            bean { LoginHandler(ref(), ref()) }
-            bean { ViewRoutes(ref(), ref()) }
+            bean { ViewRoutes(ref()) }
             bean { ApiHandler(ref(), ref()) }
             bean { ApiRoutes(ref()) }
             bean<ExceptionHandler>()
-            bean<PacktWebFilter>()
-            //securityBeans()
+            securityBeans { securityService ->
+                pathMatchers(HttpMethod.GET, "/api/projects/**").permitAll()
+                    .pathMatchers(HttpMethod.GET, "/login").permitAll()
+                    .pathMatchers(HttpMethod.POST, "/login").permitAll()
+                    .pathMatchers(HttpMethod.POST, "/api/projects/**").access(securityService::isAdmin)
+            }
         }.initialize(ctx)
     })
     application.run(*args)
