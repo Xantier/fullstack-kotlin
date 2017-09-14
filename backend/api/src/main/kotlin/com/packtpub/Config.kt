@@ -27,6 +27,7 @@ fun main(args: Array<String>) {
             bean<ExceptionHandler>()
             securityBeans { securityService ->
                 pathMatchers(HttpMethod.GET, "/api/projects/**").permitAll()
+                    .pathMatchers("/resources/**").permitAll()
                     .pathMatchers(HttpMethod.GET, "/login").permitAll()
                     .pathMatchers(HttpMethod.POST, "/login").permitAll()
                     .pathMatchers(HttpMethod.POST, "/api/projects/**").access(securityService::isAdmin)
