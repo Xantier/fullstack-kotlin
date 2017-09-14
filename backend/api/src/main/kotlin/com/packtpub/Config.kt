@@ -24,6 +24,7 @@ fun main(args: Array<String>) {
             bean { ApiHandler(it.ref(), it.ref()) }
             bean { ApiRoutes(it.ref()) }
             bean<ExceptionHandler>()
+
         }(ctx)
     })
     application.run(*args)
