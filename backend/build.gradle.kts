@@ -10,6 +10,7 @@ buildscript {
     val springBootVersion: String = properties["springBootVersion"] as String
     repositories {
         maven { setUrl("https://repo.spring.io/milestone") }
+        maven { setUrl("https://repo.spring.io/snapshot") }
     }
 
     dependencies {
