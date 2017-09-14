@@ -7,17 +7,17 @@ import org.springframework.context.support.BeanDefinitionDsl
 import org.springframework.context.support.GenericApplicationContext
 import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.UserDetailsRepositoryAuthenticationManager
+import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity
 import org.springframework.security.config.web.server.HttpSecurity
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.security.core.userdetails.UserDetailsRepository
 import org.springframework.security.web.server.SecurityWebFilterChain
 import org.springframework.security.web.server.WebFilterChainFilter
 import org.springframework.security.web.server.context.WebSessionSecurityContextRepository
 import org.springframework.web.server.WebFilter
 import reactor.core.publisher.Flux
-import reactor.core.publisher.Mono
+
 
 @Configuration
 class UserConfig(private val applicationContext: GenericApplicationContext) {
@@ -28,10 +28,22 @@ class UserConfig(private val applicationContext: GenericApplicationContext) {
         UserServiceImpl(applicationContext.getBean(UserRepository::class.java))
 }
 
+@EnableWebFluxSecurity
+class SecurityConfig
+
 
 fun BeanDefinitionDsl.securityBeans() {
+    bean {
+        SecurityService(ref())
+    }
+
+
+    bean<WebFilter>("springSecurityFilterChain") {
+        WebFilterChainFilter(Flux.just(ref()))
+    }
+
     bean<SecurityWebFilterChain> {
-        HttpSecurity.http().authorizeExchange()
+        ref<HttpSecurity>().authorizeExchange()
             .pathMatchers(HttpMethod.GET, "/api/projects/**").permitAll()
             .pathMatchers(HttpMethod.GET, "/login").permitAll()
             .pathMatchers(HttpMethod.POST, "/login").permitAll()
@@ -40,25 +52,15 @@ fun BeanDefinitionDsl.securityBeans() {
             .and()
             .build()
     }
-    bean<WebFilter>("springSecurityFilterChain") {
-        WebFilterChainFilter(Flux.just(it.ref()))
-    }
-    bean<HttpSecurity> {
+
+    bean<HttpSecurity>(scope = BeanDefinitionDsl.Scope.PROTOTYPE) {
         HttpSecurity.http().apply {
             httpBasic()
-            authenticationManager(UserDetailsRepositoryAuthenticationManager(it.ref()))
+            authenticationManager(UserDetailsRepositoryAuthenticationManager(ref()))
             securityContextRepository(WebSessionSecurityContextRepository())
         }
     }
 
-    bean {
-        UserDetailsRepository { username ->
-            Mono.just(it.ref<UserRepository>()
-                .findByUsername(username)
-                .toUserDetails()
-            )
-        }
-    }
 }
 
 private fun com.packtpub.PacktUser.toUserDetails(): UserDetails =

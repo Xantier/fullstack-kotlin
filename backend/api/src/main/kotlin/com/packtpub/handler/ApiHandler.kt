@@ -6,6 +6,7 @@ import org.springframework.web.reactive.function.server.ServerResponse
 import org.springframework.web.reactive.function.server.body
 import org.springframework.web.reactive.function.server.bodyToMono
 import reactor.core.publisher.Mono
+import reactor.core.publisher.toMono
 import javax.validation.Validator
 
 
@@ -25,33 +26,33 @@ class ApiHandler(private val validator: Validator,
             }
             .flatMap {
                 when (it.fieldErrors) {
-                    null -> ServerResponse.ok().body(Mono.just(
-                        projectService.saveProject(it.toProject()).toDto()
-                    ))
-                    else -> ServerResponse.unprocessableEntity().body(Mono.just(it))
+                    null -> ServerResponse.ok().body(
+                        projectService.saveProject(it.toProject()).toDto().toMono()
+                    )
+                    else -> ServerResponse.unprocessableEntity().body(it.toMono())
                 }
             }
 
     fun getProjects(req: ServerRequest) =
         ServerResponse.ok().body(
-            Mono.just(projectService.fetchProjects().map { it.toDto() })
+            projectService.fetchProjects().map { it.toDto() }.toMono()
         )
 
     fun getProject(req: ServerRequest): Mono<ServerResponse> {
         val id = req.pathVariable("id").toLong()
         val projectDTO: ProjectDTO? = projectService.fetchProject(id)?.toDto()
         return if (projectDTO != null) {
-            ServerResponse.ok().body(Mono.just(projectDTO))
+            ServerResponse.ok().body(projectDTO.toMono())
         } else {
             ServerResponse.notFound().build()
         }
     }
 
     fun getOwners(req: ServerRequest): Mono<ServerResponse> =
-        ServerResponse.ok().body(Mono.just(projectService.fetchAllOwners()))
+        ServerResponse.ok().body(projectService.fetchAllOwners().toMono())
 
     fun getByOwner(req: ServerRequest): Mono<ServerResponse> {
         val name = req.pathVariable("name")
-        return ServerResponse.ok().body(Mono.just(projectService.findByOwner(name).map { it.toDto() }))
+        return ServerResponse.ok().body(projectService.findByOwner(name).map { it.toDto() }.toMono())
     }
 }

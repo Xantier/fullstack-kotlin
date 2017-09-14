@@ -2,8 +2,9 @@ package com.packtpub
 
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
+import java.util.*
 
 @Repository
-internal interface UserRepository : CrudRepository<PacktUser, Long>{
-    fun findByUsername(username: String): PacktUser
+interface UserRepository : CrudRepository<PacktUser, Long> {
+    fun findOneByUsername(username: String): Optional<PacktUser>
 }
