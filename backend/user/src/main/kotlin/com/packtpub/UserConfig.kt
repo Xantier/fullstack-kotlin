@@ -31,7 +31,6 @@ fun BeanDefinitionDsl.securityBeans(paths: HttpSecurity.AuthorizeExchangeBuilder
     bean<SecurityService> {
         SecurityServiceImpl()
     }
-
     bean<SecurityWebFilterChain> {
         ref<HttpSecurity>().authorizeExchange()
             .paths(ref())
