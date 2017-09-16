@@ -1,7 +1,7 @@
 package com.packtpub
 
 import org.springframework.context.support.BeanDefinitionDsl
-import org.springframework.http.HttpMethod
+import org.springframework.security.authentication.UserDetailsRepositoryAuthenticationManager
 import org.springframework.security.config.web.server.HttpSecurity
 import org.springframework.security.core.userdetails.UserDetailsRepository
 import org.springframework.security.web.server.SecurityWebFilterChain
@@ -9,12 +9,15 @@ import reactor.core.publisher.Mono
 import reactor.core.publisher.toMono
 
 
-fun BeanDefinitionDsl.securityBeans() {
+fun BeanDefinitionDsl.securityBeans(paths: HttpSecurity.AuthorizeExchangeBuilder
+.(SecurityService) -> HttpSecurity.AuthorizeExchangeBuilder) {
     bean<UserRepository>()
-    bean<UserService>{
+    bean<UserService> {
         UserServiceImpl(ref())
     }
-
+    bean<SecurityService> {
+        SecurityServiceImpl()
+    }
     bean {
         UserDetailsRepository { username ->
             ref<UserService>().getUserByName(username)
@@ -25,12 +28,13 @@ fun BeanDefinitionDsl.securityBeans() {
 
         }
     }
-    bean<SecurityWebFilterChain>{
+    bean<SecurityWebFilterChain> {
         HttpSecurity.http().authorizeExchange()
-            .pathMatchers(HttpMethod.GET, "/api/projects/**").permitAll()
-            .pathMatchers(HttpMethod.GET, "/projects/**").hasRole("ADMIN")
-            .pathMatchers(HttpMethod.POST, "/api/projects/**").hasRole("ADMIN")
+            .paths(ref())
             .anyExchange().authenticated()
+            .and()
+            .authenticationManager(UserDetailsRepositoryAuthenticationManager(ref()))
+            .formLogin()
             .and()
             .build()
     }

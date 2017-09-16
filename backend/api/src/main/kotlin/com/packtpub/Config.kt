@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.ApplicationContextInitializer
 import org.springframework.context.support.GenericApplicationContext
 import org.springframework.context.support.beans
+import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity
 
 
@@ -26,7 +27,13 @@ fun main(args: Array<String>) {
             bean { ApiHandler(ref(), ref()) }
             bean { ApiRoutes(ref()) }
             bean<ExceptionHandler>()
-            securityBeans()
+            securityBeans{securityService ->
+                pathMatchers(HttpMethod.GET, "/api/projects/**").permitAll()
+                    .pathMatchers("/resources/**").permitAll()
+                    .pathMatchers(HttpMethod.GET, "/login").permitAll()
+                    .pathMatchers(HttpMethod.POST, "/login").permitAll()
+                    .pathMatchers(HttpMethod.POST, "/api/projects/**").access(securityService::isAdmin)
+            }
         }.initialize(ctx)
     })
     application.run(*args)

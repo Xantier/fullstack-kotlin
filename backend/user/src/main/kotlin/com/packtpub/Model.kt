@@ -1,4 +1,5 @@
 package com.packtpub
+
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
@@ -20,14 +21,15 @@ data class PacktUser(
 
     @ElementCollection(fetch = FetchType.EAGER)
     val roles: List<String> = listOf()
-)
+) {
 
-fun com.packtpub.PacktUser.toUserDetails(): UserDetails =
-    User.withUsername(username)
-        .password(password)
-        .accountExpired(!active)
-        .accountLocked(!active)
-        .credentialsExpired(!active)
-        .disabled(!active)
-        .authorities(roles.map(::SimpleGrantedAuthority).toList())
-        .build()
+    fun toUserDetails(): UserDetails =
+        User.withUsername(username)
+            .password(password)
+            .accountExpired(!active)
+            .accountLocked(!active)
+            .credentialsExpired(!active)
+            .disabled(!active)
+            .authorities(roles.map(::SimpleGrantedAuthority).toList())
+            .build()
+}
