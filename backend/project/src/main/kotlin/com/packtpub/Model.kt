@@ -15,7 +15,7 @@ data class Project(
     val id: Long? = null,
     val description: String? = null,
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     val tags: List<String> = listOf(),
     val license: String? = null
 )

@@ -1,5 +1,8 @@
 package com.packtpub
 
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.web.reactive.function.client.WebClient
+
 interface ProjectService {
     fun saveProject(project: Project): Project
     fun fetchProjects(): List<Project>
@@ -11,11 +14,15 @@ interface ProjectService {
 
 internal class ProjectServiceImpl
 (private val projectRepository: ProjectRepository) : ProjectService {
+
+    @Value("\${api.endpoint.url}")
+    lateinit var endpoint: String
+
     override fun fetchProjects(): List<Project> =
         projectRepository.findAll().toList()
 
-    override fun saveProject(project: Project) =
-        when (project.id) {
+    override fun saveProject(project: Project): Project {
+        return when (project.id) {
             null -> projectRepository.save(project)
             else -> projectRepository.findById(project.id)
                 .map { persistedProject ->
@@ -28,6 +35,7 @@ internal class ProjectServiceImpl
                         ))
                 }.orElse(projectRepository.save(project))
         }
+    }
 
     override fun fetchProject(id: Long): Project? =
         projectRepository.findById(id).orElse(null)
@@ -40,4 +48,8 @@ internal class ProjectServiceImpl
 
     override fun fetchProjectsForView(): List<ProjectView> =
         projectRepository.retrieveAllProjectsForView()
+
+    private fun fetchProjects(project: Project) {
+        val webclient = WebClient.create(endpoint)
+    }
 }
