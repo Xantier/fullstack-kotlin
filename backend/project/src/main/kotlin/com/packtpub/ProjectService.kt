@@ -1,7 +1,13 @@
 package com.packtpub
 
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.http.MediaType
 import org.springframework.web.reactive.function.client.WebClient
+import org.springframework.web.reactive.function.client.bodyToMono
+
+
+const val mercy: String = "application/vnd.github.mercy-preview+json"
+const val drax: String = "application/vnd.github.drax-preview+json"
 
 interface ProjectService {
     fun saveProject(project: Project): Project
@@ -22,6 +28,7 @@ internal class ProjectServiceImpl
         projectRepository.findAll().toList()
 
     override fun saveProject(project: Project): Project {
+        fetchProjects(project)
         return when (project.id) {
             null -> projectRepository.save(project)
             else -> projectRepository.findById(project.id)
@@ -51,5 +58,18 @@ internal class ProjectServiceImpl
 
     private fun fetchProjects(project: Project) {
         val webclient = WebClient.create(endpoint)
+        webclient.get()
+            .uri("/repos/${project.owner}/${project.name}")
+            .accept(MediaType.parseMediaType(mercy),
+                MediaType.parseMediaType(drax))
+            .exchange()
+            .flatMap { response ->
+                response.bodyToMono<GithubApiDto>()
+            }
+            .map {
+                println(it)
+                it
+            }
+            .subscribe()
     }
 }
