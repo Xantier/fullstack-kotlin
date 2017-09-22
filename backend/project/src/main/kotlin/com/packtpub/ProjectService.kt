@@ -4,13 +4,15 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.MediaType
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.bodyToMono
+import reactor.core.publisher.Mono
+import reactor.core.publisher.toMono
 
 
 const val mercy: String = "application/vnd.github.mercy-preview+json"
 const val drax: String = "application/vnd.github.drax-preview+json"
 
 interface ProjectService {
-    fun saveProject(project: Project): Project
+    fun saveProject(project: Project): Mono<Project>
     fun fetchProjects(): List<Project>
     fun fetchProject(id: Long): Project?
     fun findByOwner(owner: String): List<Project>
@@ -27,20 +29,14 @@ internal class ProjectServiceImpl
     override fun fetchProjects(): List<Project> =
         projectRepository.findAll().toList()
 
-    override fun saveProject(project: Project): Project {
-        fetchProjects(project)
-        return when (project.id) {
-            null -> projectRepository.save(project)
-            else -> projectRepository.findById(project.id)
-                .map { persistedProject ->
-                    projectRepository.save(
-                        persistedProject.copy(
-                            name = project.name,
-                            owner = project.owner,
-                            url = project.url,
-                            language = project.language
-                        ))
-                }.orElse(projectRepository.save(project))
+    override fun saveProject(project: Project): Mono<Project> {
+        return project.toMono()
+            .zipWith(fetchProjects(project), { it, githubApiDto ->
+                it.copy(description = githubApiDto.description,
+                    tags = githubApiDto.tags,
+                    license = githubApiDto.license)
+            }).map { fullproject ->
+            projectRepository.save(fullproject)
         }
     }
 
@@ -56,9 +52,9 @@ internal class ProjectServiceImpl
     override fun fetchProjectsForView(): List<ProjectView> =
         projectRepository.retrieveAllProjectsForView()
 
-    private fun fetchProjects(project: Project) {
+    private fun fetchProjects(project: Project): Mono<GithubApiDto> {
         val webclient = WebClient.create(endpoint)
-        webclient.get()
+        return webclient.get()
             .uri("/repos/${project.owner}/${project.name}")
             .accept(MediaType.parseMediaType(mercy),
                 MediaType.parseMediaType(drax))
@@ -66,10 +62,5 @@ internal class ProjectServiceImpl
             .flatMap { response ->
                 response.bodyToMono<GithubApiDto>()
             }
-            .map {
-                println(it)
-                it
-            }
-            .subscribe()
     }
 }

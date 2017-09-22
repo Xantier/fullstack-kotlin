@@ -25,9 +25,9 @@ class ApiHandler(private val validator: Validator,
             }
             .flatMap {
                 when (it.fieldErrors) {
-                    null -> ServerResponse.ok().body(Mono.just(
-                        projectService.saveProject(it.toProject()).toDto()
-                    ))
+                    null -> ServerResponse.ok().body(
+                        projectService.saveProject(it.toProject()).map { it.toDto() }
+                    )
                     else -> ServerResponse.unprocessableEntity().body(Mono.just(it))
                 }
             }

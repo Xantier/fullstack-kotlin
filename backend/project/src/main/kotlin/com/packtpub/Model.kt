@@ -30,7 +30,7 @@ data class ProjectView(val name: String, val url: String, val owner: String)
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class GithubApiDto(
-    val description: String = "",
+    val description: String? = "",
     val license: String? = null,
     @JsonProperty("topics")
     val tags: List<String> = listOf()
