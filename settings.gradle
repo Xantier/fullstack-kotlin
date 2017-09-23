@@ -3,5 +3,6 @@ include 'backend'
 include 'backend:api'
 include 'backend:project'
 include 'backend:user'
+include 'frontend'
 rootProject.buildFileName = 'build.gradle.kts'
 
