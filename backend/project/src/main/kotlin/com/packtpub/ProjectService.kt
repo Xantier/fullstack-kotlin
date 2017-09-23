@@ -66,10 +66,7 @@ internal class ProjectServiceImpl
             .flatMap { response ->
                 response.bodyToMono<GithubApiDto>()
             }
-            .map {
-                println(it)
-                it
-            }
+            .log()
             .subscribe()
     }
 }
