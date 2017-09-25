@@ -36,5 +36,21 @@ compileKotlin2Js.kotlinOptions {
     freeCompilerArgs = listOf("-Xcoroutines=enable")
     outputFile = "${project.buildDir.path}/js/index.js"
     main = "call"
-    moduleKind = "commonjs"
+    //moduleKind = "commonjs"
+}
+
+
+val assembleWeb by tasks.creating(Copy::class) {
+    dependsOn("classes")
+    configurations["compile"].forEach { file ->
+        from(zipTree(file.absolutePath)) {
+            includeEmptyDirs = false
+            include { fileTreeElement ->
+                val path = fileTreeElement.path
+                path.endsWith(".js") && path.startsWith("META-INF/resources/") || !path.startsWith("META_INF/")
+            }
+        }
+    }
+    from(compileKotlin2Js.destinationDir)
+    into("${project.buildDir.path}/js")
 }
