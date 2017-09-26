@@ -3,10 +3,7 @@ package com.packtpub
 import org.w3c.xhr.XMLHttpRequest
 
 fun main(args: Array<String>) {
-    println("hello world")
-    js("""
-console.log('hello from javascript')
-""")
+    println("Hello Kotlin Developers")
     val xhr = XMLHttpRequest()
     xhr.open("GET", "http://localhost:8080/api/projects", true)
     xhr.onreadystatechange = {
@@ -14,6 +11,3 @@ console.log('hello from javascript')
     }
     xhr.send()
 }
-
-
-

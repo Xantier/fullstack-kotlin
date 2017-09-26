@@ -27,7 +27,7 @@ fun index(header: String, projects: List<ProjectView>): String {
                     }
                 }
             }
-            script(src = "/static/js/hello.js")
+            script(src = "/frontend/frontend.bundle.js")
         }
 
     }
