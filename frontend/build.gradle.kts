@@ -33,8 +33,10 @@ repositories {
     maven { setUrl("https://dl.bintray.com/kotlin/kotlin-eap") }
 }
 val kotlinVersion: String = properties["kotlinVersion"] as String
+val kotlinxHtmlVersion: String = properties["kotlinxHtmlVersion"] as String
 dependencies {
     "compile"(kotlin("stdlib-js", kotlinVersion))
+    "compile"("org.jetbrains.kotlinx:kotlinx-html-js:$kotlinxHtmlVersion")
 }
 
 val compileKotlin2Js: Kotlin2JsCompile by tasks
@@ -54,7 +56,7 @@ configure<KotlinFrontendExtension>{
     configure<NpmExtension> {
         replaceVersion("kotlinx-html-js", "0.6.4")
         replaceVersion("kotlinx-html-shared", "0.6.4")
-        replaceVersion("kotlin-js-library", "1.1.5")
+        replaceVersion("kotlin-js-library", "1.1.51")
 
         dependency("react", "16.0.0")
         dependency("react-dom", "16.0.0")
