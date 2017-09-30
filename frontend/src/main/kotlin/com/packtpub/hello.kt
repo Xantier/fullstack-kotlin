@@ -1,13 +1,52 @@
 package com.packtpub
 
-import org.w3c.xhr.XMLHttpRequest
+import kotlinx.html.div
+import react.RProps
+import react.RState
+import react.ReactComponentSpec
+import react.ReactComponentStatelessSpec
+import react.dom.*
+import kotlin.browser.document
 
 fun main(args: Array<String>) {
-    println("Hello Webpack")
-    val xhr = XMLHttpRequest()
-    xhr.open("GET", "/api/projects", true)
-    xhr.onreadystatechange = {
-        println(xhr.response)
+    ReactDOM.render(document.getElementById("container")) {
+        div {
+            HelloComponent {
+                hello = "Hi"
+            }
+            WorldComponent {
+                world = "World"
+            }
+        }
     }
-    xhr.send()
+}
+
+class HelloComponent : ReactDOMComponent
+<HelloComponent.Props, HelloComponent.State>() {
+    companion object : ReactComponentSpec<HelloComponent, Props, State>
+
+    init {
+        state = State()
+    }
+
+    override fun ReactDOMBuilder.render() {
+        div {
+            +props.hello
+        }
+    }
+
+    class Props(var hello: String) : RProps()
+    class State(var showWarning: Boolean = false) : RState
+}
+
+class WorldComponent : ReactDOMStatelessComponent<WorldComponent.Props>() {
+    companion object : ReactComponentStatelessSpec<WorldComponent, Props>
+
+    override fun ReactDOMBuilder.render() {
+        div {
+            +props.world
+        }
+    }
+
+    class Props(var world: String) : RProps()
 }
