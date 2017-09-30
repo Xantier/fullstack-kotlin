@@ -10,14 +10,7 @@ import kotlin.browser.document
 
 fun main(args: Array<String>) {
     ReactDOM.render(document.getElementById("container")) {
-        div {
-            HelloComponent {
-                hello = "Hi"
-            }
-            WorldComponent {
-                world = "World"
-            }
-        }
+        Application {}
     }
 }
 
@@ -36,7 +29,7 @@ class HelloComponent : ReactDOMComponent
     }
 
     class Props(var hello: String) : RProps()
-    class State(var showWarning: Boolean = false) : RState
+    class State : RState
 }
 
 class WorldComponent : ReactDOMStatelessComponent<WorldComponent.Props>() {

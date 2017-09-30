@@ -9,7 +9,7 @@ fun index(header: String, projects: List<ProjectView>): String {
     return createHTML(true).html {
         head {
             title = "Full Stack Kotlin"
-            styleLink("/static/css/hello.css")
+            styleLink("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css")
         }
         body {
             div {
