@@ -1,17 +1,39 @@
 package com.packtpub
 
+import kotlinx.html.a
 import kotlinx.html.div
+import org.w3c.dom.events.EventListener
 import react.RProps
 import react.RState
 import react.ReactComponentSpec
 import react.ReactComponentStatelessSpec
 import react.dom.*
 import kotlin.browser.document
+import kotlin.browser.window
 
 fun main(args: Array<String>) {
-    ReactDOM.render(document.getElementById("container")) {
-        Application {}
+    val container = document.getElementById("container")
+    fun render(hash: String = "") {
+        when (hash) {
+            "form" -> ReactDOM.render(container) {
+                Application {}
+            }
+            "list" -> ReactDOM.render(container) {
+                HelloComponent {
+                    hello = "Hello"
+                }
+            }
+            else   -> ReactDOM.render(container) {
+                Application {}
+            }
+        }
+
     }
+    window.addEventListener("hashchange", EventListener {
+        val hash = window.location.hash.substring(1)
+        render(hash)
+    })
+    render()
 }
 
 class HelloComponent : ReactDOMComponent
@@ -24,7 +46,14 @@ class HelloComponent : ReactDOMComponent
 
     override fun ReactDOMBuilder.render() {
         div {
-            +props.hello
+            div {
+                +props.hello
+            }
+            div {
+                a(href = "#form") {
+                    +"Go to form view"
+                }
+            }
         }
     }
 

@@ -1,5 +1,6 @@
 package com.packtpub
 
+import kotlinx.html.a
 import kotlinx.html.div
 import kotlinx.html.form
 import kotlinx.html.label
@@ -48,6 +49,9 @@ class Application : ReactDOMComponent<Application.Props, Application.State>() {
                 div {
                     +"Current Value: ${state.numberValue}"
                 }
+            }
+            a(href = "#list") {
+                +"Go to list view"
             }
         }
     }
