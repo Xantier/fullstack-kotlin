@@ -1,23 +1,20 @@
 package com.packtpub.form
 
 import com.packtpub.Language
+import com.packtpub.Project
 import kotlinx.html.*
 import react.RProps
-import react.RState
-import react.ReactComponentSpec
+import react.ReactComponentStatelessSpec
 import react.dom.ReactDOMBuilder
-import react.dom.ReactDOMComponent
+import react.dom.ReactDOMStatelessComponent
 
 
-class Form : ReactDOMComponent<Form.Props, Form.State>() {
-    companion object : ReactComponentSpec<Form, Props, State>
+class Form : ReactDOMStatelessComponent<Form.Props>() {
+    companion object : ReactComponentStatelessSpec<Form, Props>
 
-    init {
-        state = State()
-    }
 
     override fun ReactDOMBuilder.render() {
-        div(classes = "container"){
+        div(classes = "container") {
             form {
                 div(classes = "form-group") {
                     label {
@@ -27,11 +24,9 @@ class Form : ReactDOMComponent<Form.Props, Form.State>() {
                     TextInput {
                         id = "name"
                         change = {
-                            setState {
-                                name = it
-                            }
+                            props.update(props.project.copy(name = it))
                         }
-                        value = state.name
+                        value = props.project.name
                     }
                 }
                 div(classes = "form-group") {
@@ -42,11 +37,9 @@ class Form : ReactDOMComponent<Form.Props, Form.State>() {
                     TextInput {
                         id = "url"
                         change = {
-                            setState {
-                                url = it
-                            }
+                            props.update(props.project.copy(url = it))
                         }
-                        value = state.url
+                        value = props.project.url
                     }
                 }
                 div(classes = "form-group") {
@@ -57,11 +50,9 @@ class Form : ReactDOMComponent<Form.Props, Form.State>() {
                     TextInput {
                         id = "owner"
                         change = {
-                            setState {
-                                owner = it
-                            }
+                            props.update(props.project.copy(owner = it))
                         }
-                        value = state.owner
+                        value = props.project.owner
                     }
                 }
                 div(classes = "form-group") {
@@ -72,27 +63,26 @@ class Form : ReactDOMComponent<Form.Props, Form.State>() {
                     DropDown {
                         id = "language"
                         action = {
-                            setState {
-                                language = Language.valueOf(it)
-                            }
+                            props.update(props.project.copy(language = Language.valueOf(it)))
                         }
                         options = Language.values().map { it.name }
-                        value = state.language?.name
+                        value = props.project.language?.name
                     }
                 }
             }
-            Button {
-                action = {
-                    println(state)
+            div {
+                Button {
+                    action = props.submit
+                    text = "Submit"
                 }
-                text = "Submit"
-            }
-            Button {
-                action = {
-                    clearState()
+                Button {
+                    action = {
+                        clearState()
+                    }
+                    text = "Clear Form"
                 }
-                text = "Clear Form"
             }
+
             a(href = "#list") {
                 +"Go to list view"
             }
@@ -100,17 +90,12 @@ class Form : ReactDOMComponent<Form.Props, Form.State>() {
     }
 
     private fun clearState() {
-        setState {
-            name = ""
-            url = ""
-            owner = ""
-            language = null
-        }
+        props.update(Project.identity())
     }
 
-    class Props : RProps()
-    class State(var name: String = "",
-                var url: String = "",
-                var owner: String = "",
-                var language: Language? = null) : RState
+    class Props(
+        var project: Project,
+        var update: (Project) -> Unit,
+        var submit: () -> Unit
+    ) : RProps()
 }
