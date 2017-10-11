@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 
 plugins {
-    kotlin("jvm", "1.1.50")
+    kotlin("jvm", "1.1.51")
 }
 
 buildscript {

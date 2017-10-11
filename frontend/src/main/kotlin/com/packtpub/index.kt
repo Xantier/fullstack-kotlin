@@ -1,13 +1,9 @@
 package com.packtpub
 
-import kotlinx.html.a
-import kotlinx.html.div
+import com.packtpub.form.Form
 import org.w3c.dom.events.EventListener
-import react.RProps
-import react.RState
-import react.ReactComponentSpec
-import react.ReactComponentStatelessSpec
-import react.dom.*
+import react.dom.ReactDOM
+import react.dom.render
 import kotlin.browser.document
 import kotlin.browser.window
 
@@ -16,15 +12,18 @@ fun main(args: Array<String>) {
     fun render(hash: String = "") {
         when (hash) {
             "form" -> ReactDOM.render(container) {
-                Application {}
+                Form {}
             }
             "list" -> ReactDOM.render(container) {
-                HelloComponent {
-                    hello = "Hello"
+                ProjectList {
+                    items = listOf()
+                    action = {
+                        println("Do nothing")
+                    }
                 }
             }
             else   -> ReactDOM.render(container) {
-                Application {}
+                Form {}
             }
         }
 
@@ -33,42 +32,6 @@ fun main(args: Array<String>) {
         val hash = window.location.hash.substring(1)
         render(hash)
     })
-    render()
+    render(window.location.hash.substring(1))
 }
 
-class HelloComponent : ReactDOMComponent
-<HelloComponent.Props, HelloComponent.State>() {
-    companion object : ReactComponentSpec<HelloComponent, Props, State>
-
-    init {
-        state = State()
-    }
-
-    override fun ReactDOMBuilder.render() {
-        div {
-            div {
-                +props.hello
-            }
-            div {
-                a(href = "#form") {
-                    +"Go to form view"
-                }
-            }
-        }
-    }
-
-    class Props(var hello: String) : RProps()
-    class State : RState
-}
-
-class WorldComponent : ReactDOMStatelessComponent<WorldComponent.Props>() {
-    companion object : ReactComponentStatelessSpec<WorldComponent, Props>
-
-    override fun ReactDOMBuilder.render() {
-        div {
-            +props.world
-        }
-    }
-
-    class Props(var world: String) : RProps()
-}
