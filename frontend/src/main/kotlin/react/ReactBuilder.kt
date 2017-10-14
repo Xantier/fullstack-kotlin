@@ -1,6 +1,6 @@
 package react
 
-import react.util.createInstance
+import com.packtpub.util.createInstance
 
 
 @DslMarker

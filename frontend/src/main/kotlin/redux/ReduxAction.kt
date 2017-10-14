@@ -1,6 +1,6 @@
 package redux
 
-import react.util.js
+import com.packtpub.util.js
 
 
 enum class ActionType { TEST }

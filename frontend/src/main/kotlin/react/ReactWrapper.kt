@@ -1,6 +1,6 @@
 package react
 
-import react.util.toPlainObjectStripNull
+import com.packtpub.util.toPlainObjectStripNull
 
 interface ReactElement
 

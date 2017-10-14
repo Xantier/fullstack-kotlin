@@ -1,6 +1,6 @@
 package react
 
-import react.util.createInstance
+import com.packtpub.util.createInstance
 import kotlin.reflect.KClass
 
 abstract class RProps {

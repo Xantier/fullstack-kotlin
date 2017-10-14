@@ -1,4 +1,4 @@
-package react.util
+package com.packtpub.util
 
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLTextAreaElement
