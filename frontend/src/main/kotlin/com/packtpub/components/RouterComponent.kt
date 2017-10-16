@@ -1,8 +1,9 @@
 @file:Suppress("UnsafeCastFromDynamic")
 
-package com.packtpub
+package com.packtpub.components
 
-import com.packtpub.form.Form
+import com.packtpub.components.form.Form
+import com.packtpub.model.Project
 import com.packtpub.store.ActionType
 import com.packtpub.store.FormInput
 import com.packtpub.store.ReduxStore
@@ -23,6 +24,7 @@ val routerComponent =
                 hash = state.hash
                 currentProject = state.currentProject
                 projectList = state.projectList
+                isSpinning = state.isSpinning
             }
         }, { dispatch, _ ->
         jsObject {
@@ -55,6 +57,7 @@ class RouterComponent : ReactDOMStatelessComponent<RouterComponent.Props>() {
             else   ->
                 ProjectList {
                     items = props.projectList.asList()
+                    isSpinning = props.isSpinning
                     action = {
                         println("Do nothing")
                     }
@@ -64,6 +67,7 @@ class RouterComponent : ReactDOMStatelessComponent<RouterComponent.Props>() {
 
     class Props(var hash: String = "",
                 var projectList: Array<Project> = arrayOf(),
+                var isSpinning: Boolean = false,
                 var currentProject: Project = Project.identity(),
                 var updateAction: (Any, String) -> Unit,
                 var clearAction: () -> Unit,

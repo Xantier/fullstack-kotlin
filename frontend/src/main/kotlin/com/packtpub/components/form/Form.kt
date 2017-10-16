@@ -1,7 +1,7 @@
-package com.packtpub.form
+package com.packtpub.components.form
 
-import com.packtpub.Language
-import com.packtpub.Project
+import com.packtpub.model.Language
+import com.packtpub.model.Project
 import kotlinx.html.*
 import react.RProps
 import react.ReactComponentStatelessSpec

@@ -15,6 +15,7 @@ class BoxedState<T>(var state: T) : RState
 interface ReactComponentSpec<T : ReactComponent<P, S>, P : RProps, S : RState>
 interface ReactComponentStatelessSpec<T : ReactComponent<P, ReactComponentNoState>, P : RProps> : ReactComponentSpec<T, P, ReactComponentNoState>
 interface ReactComponentPropslessSpec<T : ReactComponent<ReactComponentNoProps, S>, S : RState> : ReactComponentSpec<T, ReactComponentNoProps, S>
+interface ReactComponentStaticSpec<T : ReactComponent<ReactComponentNoProps, ReactComponentNoState>> : ReactComponentSpec<T, ReactComponentNoProps, ReactComponentNoState>
 
 
 private var initWrapper: ReactComponentWrapper<*, *, *>? = null

@@ -1,7 +1,7 @@
 package com.packtpub.store
 
-import com.packtpub.Language
-import com.packtpub.Project
+import com.packtpub.model.Language
+import com.packtpub.model.Project
 import redux.ReduxState
 
 
@@ -10,18 +10,18 @@ fun mainReducer(reduxState: ReduxStore, reduxAction: dynamic): ReduxState =
         reduxState
     } else {
         when (ActionType.valueOf(reduxAction.type)) {
-            ActionType.HASH_CHANGE -> {
+            ActionType.HASH_CHANGE       -> {
                 val hashChange = reduxAction.payload as HashChange
                 reduxState.copy(hash = hashChange.newHash)
             }
 
-            ActionType.FORM_SUBMIT -> {
+            ActionType.FORM_SUBMIT       -> {
                 val newProject = reduxAction.payload as FormSubmit
                 val newList = reduxState.projectList + newProject.project
                 reduxState.copy(projectList = newList, currentProject = Project.identity())
             }
-            ActionType.FORM_CLEAR  -> reduxState.copy(currentProject = Project.identity())
-            ActionType.FORM_INPUT  -> {
+            ActionType.FORM_CLEAR        -> reduxState.copy(currentProject = Project.identity())
+            ActionType.FORM_INPUT        -> {
                 val formInput = reduxAction.payload as FormInput
                 val currentProject = reduxState.currentProject
                 val updatedProject = when (formInput.target) {
@@ -33,9 +33,13 @@ fun mainReducer(reduxState: ReduxStore, reduxAction: dynamic): ReduxState =
                 }
                 reduxState.copy(currentProject = updatedProject)
             }
-            ActionType.TEST_ASYNC  -> {
-                println("Asynchoronous Reducer")
-                reduxState
+            ActionType.SPINNING          -> {
+                val booleanAction = reduxAction.payload as BooleanAction
+                reduxState.copy(isSpinning = booleanAction.flag)
+            }
+            ActionType.POPULATE_PROJECTS -> {
+                val populateProject = reduxAction.payload as PopulateProject
+                reduxState.copy(projectList = populateProject.projects)
             }
         }
     }

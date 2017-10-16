@@ -1,4 +1,4 @@
-package com.packtpub.form
+package com.packtpub.components.form
 
 import kotlinx.html.*
 import kotlinx.html.js.onChangeFunction

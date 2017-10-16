@@ -1,9 +1,10 @@
+@file:Suppress("UnsafeCastFromDynamic")
+
 package com.packtpub
 
-import com.packtpub.store.ActionType
-import com.packtpub.store.HashChange
-import com.packtpub.store.ReduxStore
-import com.packtpub.store.mainReducer
+import com.packtpub.components.RouterComponent
+import com.packtpub.components.routerComponent
+import com.packtpub.store.*
 import org.w3c.dom.events.EventListener
 import react.dom.ReactDOM
 import react.dom.render
@@ -31,5 +32,6 @@ fun main(args: Array<String>) {
         reduxStore.dispatch(ReduxAction(ActionType.HASH_CHANGE, HashChange(hash)))
     })
     reduxStore.dispatch(ReduxAction(ActionType.HASH_CHANGE, HashChange(window.location.hash.substring(1))))
+    reduxStore.doDispatch(fetchData())
     render()
 }
