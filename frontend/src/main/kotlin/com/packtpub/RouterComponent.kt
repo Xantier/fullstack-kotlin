@@ -1,10 +1,13 @@
+@file:Suppress("UnsafeCastFromDynamic")
+
 package com.packtpub
 
 import com.packtpub.form.Form
 import com.packtpub.store.ActionType
 import com.packtpub.store.FormInput
-import com.packtpub.store.FormSubmit
 import com.packtpub.store.ReduxStore
+import com.packtpub.store.submitForm
+import com.packtpub.util.js
 import com.packtpub.util.jsObject
 import react.RProps
 import react.ReactComponentStatelessSpec
@@ -16,19 +19,22 @@ import redux.connect
 val routerComponent =
     connect<RouterComponent.Props, ReduxStore>(
         { state: ReduxStore, _ ->
-            println(state.hash)
-            jsObject<RouterComponent.Props> {
+            jsObject {
                 hash = state.hash
                 currentProject = state.currentProject
                 projectList = state.projectList
             }
-        },{ dispatch, _ ->
-        jsObject<RouterComponent.Props> {
+        }, { dispatch, _ ->
+        jsObject {
             updateAction = { target, value ->
                 dispatch(ReduxAction(ActionType.FORM_INPUT, FormInput(target, value))())
             }
-            submitAction = { dispatch(ReduxAction(ActionType.FORM_SUBMIT, FormSubmit(it))()) }
-            clearAction = { dispatch(ReduxAction(ActionType.FORM_CLEAR)())}
+            submitAction = { project ->
+                js {
+                    dispatch(submitForm(project))
+                }
+            }
+            clearAction = { dispatch(ReduxAction(ActionType.FORM_CLEAR)()) }
         }
     })
 

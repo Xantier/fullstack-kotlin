@@ -8,7 +8,7 @@ import react.ReactElement
 
 @JsName("connect")
 external fun <P : RProps, ST : ReduxState> connect(
-    mapStateToProps: ((ST, P) -> dynamic)?,
-    mapDispatchToProps: (((dynamic) -> Unit, P) -> dynamic)?
+    mapStateToProps: ((ST, P) -> P)?,
+    mapDispatchToProps: (((dynamic) -> Unit, P) -> P)?
 ): (Any) -> ReactElement
 

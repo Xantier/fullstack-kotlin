@@ -1,5 +1,7 @@
 package redux
 
+import com.packtpub.util.require
+
 external interface ReduxState
 external class Store {
     @JsName("getState")
@@ -15,9 +17,19 @@ external object Redux {
     @JsName("createStore")
     fun <ST : ReduxState> createStore(reducer: (ST, dynamic) -> ReduxState,
                                       initialState: ST,
-                                      enhancer: (ST) -> ST = definedExternally)
+                                      enhancer: (dynamic) -> ST = definedExternally)
         : Store
+
+    @JsName("applyMiddleware")
+    fun applyMiddleware(vararg middleware: () -> (dynamic) -> dynamic)
+        : ((dynamic) -> Unit, () -> ReduxState) -> Unit
+
+    @JsName("compose")
+    fun compose(vararg funcs: dynamic): (dynamic) -> dynamic
 }
+
+val ReduxThunk: dynamic = require("redux-thunk").default
+val composeWithDevTools: dynamic = require("redux-devtools-extension").composeWithDevTools
 
 
 fun Store.dispatch(action: ReduxAction) {

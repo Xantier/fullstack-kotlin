@@ -62,6 +62,8 @@ configure<KotlinFrontendExtension>{
         dependency("react-dom", "16.0.0")
         dependency("redux", "3.7.2")
         dependency("react-redux", "5.0.6")
+        dependency("redux-thunk", "2.2.0")
+        dependency("redux-devtools-extension", "2.13.2")
         devDependency("source-map-loader")
     }
 

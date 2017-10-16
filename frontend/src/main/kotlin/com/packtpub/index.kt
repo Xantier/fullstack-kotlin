@@ -13,7 +13,7 @@ import kotlin.browser.window
 
 fun main(args: Array<String>) {
     val reduxStore = Redux.createStore(::mainReducer, ReduxStore(),
-        js("window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()")
+        composeWithDevTools(Redux.applyMiddleware(ReduxThunk))
     )
     val container = document.getElementById("container")
     fun render() {

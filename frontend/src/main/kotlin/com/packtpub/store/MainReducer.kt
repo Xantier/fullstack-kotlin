@@ -33,5 +33,9 @@ fun mainReducer(reduxState: ReduxStore, reduxAction: dynamic): ReduxState =
                 }
                 reduxState.copy(currentProject = updatedProject)
             }
+            ActionType.TEST_ASYNC  -> {
+                println("Asynchoronous Reducer")
+                reduxState
+            }
         }
     }
