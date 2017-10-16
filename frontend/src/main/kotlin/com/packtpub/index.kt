@@ -1,5 +1,9 @@
 package com.packtpub
 
+import com.packtpub.store.ActionType
+import com.packtpub.store.HashChange
+import com.packtpub.store.ReduxStore
+import com.packtpub.store.mainReducer
 import org.w3c.dom.events.EventListener
 import react.dom.ReactDOM
 import react.dom.render
@@ -7,21 +11,8 @@ import redux.*
 import kotlin.browser.document
 import kotlin.browser.window
 
-data class HashChange(val newHash: String) : ReduxState
-
 fun main(args: Array<String>) {
-    val reduxStore = Redux.createStore({ reduxState, reduxAction ->
-        if (reduxAction.type == "@@INIT") {
-            reduxState
-        } else {
-            when (ActionType.valueOf(reduxAction.type)) {
-                ActionType.TEST -> {
-                    val hashChange = reduxAction.payload as HashChange
-                    reduxState.copy(hash = hashChange.newHash)
-                }
-            }
-        }
-    }, ReduxStore(),
+    val reduxStore = Redux.createStore(::mainReducer, ReduxStore(),
         js("window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()")
     )
     val container = document.getElementById("container")
@@ -37,8 +28,8 @@ fun main(args: Array<String>) {
 
     window.addEventListener("hashchange", EventListener {
         val hash = window.location.hash.substring(1)
-        reduxStore.dispatch(ReduxAction(ActionType.TEST, HashChange(hash)))
+        reduxStore.dispatch(ReduxAction(ActionType.HASH_CHANGE, HashChange(hash)))
     })
-    reduxStore.dispatch(ReduxAction(ActionType.TEST, HashChange(window.location.hash.substring(1))))
+    reduxStore.dispatch(ReduxAction(ActionType.HASH_CHANGE, HashChange(window.location.hash.substring(1))))
     render()
 }

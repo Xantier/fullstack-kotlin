@@ -1,11 +1,11 @@
 package redux
 
+import com.packtpub.store.ActionType
 import com.packtpub.util.js
 
-
-enum class ActionType { TEST }
-
-class ReduxAction(private val type: ActionType, private val payload: Any) {
+interface ActionPayload
+class EmptyPayload: ActionPayload
+class ReduxAction(private val type: ActionType, private val payload: ActionPayload = EmptyPayload()) {
     operator fun invoke(): dynamic {
         return js {
             this.type = type.name

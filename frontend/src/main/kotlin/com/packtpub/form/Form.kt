@@ -24,7 +24,7 @@ class Form : ReactDOMStatelessComponent<Form.Props>() {
                     TextInput {
                         id = "name"
                         change = {
-                            props.update(props.project.copy(name = it))
+                            props.update(it, "name")
                         }
                         value = props.project.name
                     }
@@ -37,7 +37,7 @@ class Form : ReactDOMStatelessComponent<Form.Props>() {
                     TextInput {
                         id = "url"
                         change = {
-                            props.update(props.project.copy(url = it))
+                            props.update(it, "url")
                         }
                         value = props.project.url
                     }
@@ -50,7 +50,7 @@ class Form : ReactDOMStatelessComponent<Form.Props>() {
                     TextInput {
                         id = "owner"
                         change = {
-                            props.update(props.project.copy(owner = it))
+                            props.update(it, "owner")
                         }
                         value = props.project.owner
                     }
@@ -63,7 +63,7 @@ class Form : ReactDOMStatelessComponent<Form.Props>() {
                     DropDown {
                         id = "language"
                         action = {
-                            props.update(props.project.copy(language = Language.valueOf(it)))
+                            props.update(Language.valueOf(it), "language")
                         }
                         options = Language.values().map { it.name }
                         value = props.project.language?.name
@@ -90,12 +90,13 @@ class Form : ReactDOMStatelessComponent<Form.Props>() {
     }
 
     private fun clearState() {
-        props.update(Project.identity())
+        props.clear()
     }
 
     class Props(
         var project: Project,
-        var update: (Project) -> Unit,
-        var submit: () -> Unit
+        var update: (Any, String) -> Unit,
+        var submit: () -> Unit,
+        var clear: () -> Unit
     ) : RProps()
 }
