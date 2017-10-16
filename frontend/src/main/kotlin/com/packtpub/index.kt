@@ -7,7 +7,7 @@ import redux.*
 import kotlin.browser.document
 import kotlin.browser.window
 
-data class StateTest(val test: String) : ReduxState
+data class HashChange(val newHash: String) : ReduxState
 
 fun main(args: Array<String>) {
     val reduxStore = Redux.createStore({ reduxState, reduxAction ->
@@ -16,26 +16,29 @@ fun main(args: Array<String>) {
         } else {
             when (ActionType.valueOf(reduxAction.type)) {
                 ActionType.TEST -> {
-                    val stateTest = reduxAction.payload as StateTest
-                    reduxState.copy(test = stateTest.test)
+                    val hashChange = reduxAction.payload as HashChange
+                    reduxState.copy(hash = hashChange.newHash)
                 }
             }
         }
-    }, StateTest("TEST STRING"),
+    }, ReduxStore(),
         js("window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()")
     )
     val container = document.getElementById("container")
-    fun render(currentHash: String = "") {
+    fun render() {
         ReactDOM.render(container) {
-            RouterComponent {
-                hash = currentHash
+            ProviderComponent {
+                store = reduxStore
+                children = RouterComponent.asConnectedComponent(routerComponent)
             }
+
         }
     }
 
     window.addEventListener("hashchange", EventListener {
         val hash = window.location.hash.substring(1)
-        reduxStore.dispatch(ReduxAction(ActionType.TEST, StateTest(hash)))
+        reduxStore.dispatch(ReduxAction(ActionType.TEST, HashChange(hash)))
     })
+    reduxStore.dispatch(ReduxAction(ActionType.TEST, HashChange(window.location.hash.substring(1))))
     render()
 }

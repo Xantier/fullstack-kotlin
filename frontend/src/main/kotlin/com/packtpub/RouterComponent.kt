@@ -7,6 +7,16 @@ import react.RState
 import react.ReactComponentSpec
 import react.dom.ReactDOMBuilder
 import react.dom.ReactDOMComponent
+import redux.connect
+
+val routerComponent =
+    connect<RouterComponent.Props, ReduxStore>(
+        { state: ReduxStore, props ->
+            println(state.hash)
+            jsObject<RouterComponent.Props> {
+                hash = state.hash
+            }
+        }, null)
 
 class RouterComponent : ReactDOMComponent<RouterComponent.Props, RouterComponent.State>() {
     companion object : ReactComponentSpec<RouterComponent, Props, State>
