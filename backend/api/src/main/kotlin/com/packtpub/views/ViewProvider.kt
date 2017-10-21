@@ -1,5 +1,6 @@
 package com.packtpub.views
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.packtpub.ProjectView
 import kotlinx.html.*
 import kotlinx.html.stream.createHTML
@@ -16,9 +17,15 @@ fun index(header: String, projects: List<ProjectView>): String {
             div {
                 id = "container"
             }
-            script(src = "/frontend/frontend.bundle.js")
+            div {
+                id = "contentHolder"
+                script {
+                    val writeValueAsString = jacksonObjectMapper().writeValueAsString(projects)
+                    +"var __projects__ = '$writeValueAsString'"
+                }
+            }
+            script(src = "/static/frontend.bundle.js")
         }
-
     }
 }
 

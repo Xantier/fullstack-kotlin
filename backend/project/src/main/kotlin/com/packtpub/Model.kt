@@ -26,7 +26,7 @@ enum class Language {
     KOTLIN, JAVASCRIPT, JAVA
 }
 
-data class ProjectView(val name: String, val url: String, val owner: String)
+data class ProjectView(val name: String, val url: String, val owner: String, val language: Language)
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class GithubApiDto(

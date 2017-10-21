@@ -1,17 +1,17 @@
+@file:Suppress("UnsafeCastFromDynamic")
+
 package com.packtpub.store
 
 import com.packtpub.model.ExtraInfo
 import com.packtpub.model.Language
 import com.packtpub.model.Project
-import com.packtpub.util.async
-import com.packtpub.util.getAndParseResult
-import com.packtpub.util.jsObject
-import com.packtpub.util.postAndParseResult
+import com.packtpub.util.*
 import redux.ReduxAction
+import kotlin.browser.document
 
 
 fun submitForm(proj: Project): ((dynamic) -> Unit, () -> ReduxStore) -> Unit {
-    return { dispatch: (dynamic) -> Unit, getState: () -> ReduxStore ->
+    return { dispatch: (dynamic) -> Unit, _: () -> ReduxStore ->
         dispatch(ReduxAction(ActionType.SPINNING, BooleanAction(true))())
         dispatch(ReduxAction(ActionType.HASH_CHANGE, HashChange("list"))())
         async {
@@ -28,7 +28,7 @@ fun submitForm(proj: Project): ((dynamic) -> Unit, () -> ReduxStore) -> Unit {
 }
 
 fun fetchData(): ((dynamic) -> Unit, () -> ReduxStore) -> Unit {
-    return { dispatch: (dynamic) -> Unit, getState: () -> ReduxStore ->
+    return { dispatch: (dynamic) -> Unit, _: () -> ReduxStore ->
         dispatch(ReduxAction(ActionType.SPINNING, BooleanAction(true))())
         async {
             val projects = getAndParseResult("api/projects/") {
@@ -42,10 +42,24 @@ fun fetchData(): ((dynamic) -> Unit, () -> ReduxStore) -> Unit {
     }
 }
 
+fun grabData(): Array<Project> {
+    val unescape = require("lodash/unescape")
+    val projectJson = js("__projects__")
+    document.getElementById("contentHolder")?.remove()
+    return JSON.parse<Array<dynamic>>(unescape(projectJson)).map {
+        extractProject(it)
+    }.toTypedArray()
+}
+
 private fun extractProject(it: dynamic): Project {
-    return Project(
-        it.name, it.url, it.owner, Language.valueOf(it.language), it.id,
-        ExtraInfo(it.extraInfo.description, it.extraInfo.license,
-            arrayOf(it.extraInfo.topics).asList())
+    val project = Project(
+        it.name, it.url, it.owner, Language.valueOf(it.language), it.id
     )
+
+    if (it.extrainfo != null) {
+        val extraInfo = ExtraInfo(it.extraInfo.description, it.extraInfo.license,
+            arrayOf(it.extraInfo.topics).asList())
+        project.copy(extraInfo = extraInfo)
+    }
+    return project
 }

@@ -25,7 +25,6 @@ buildscript {
 apply {
     plugin("kotlin2js")
     plugin("org.jetbrains.kotlin.frontend")
-    if (prod) plugin("kotlin-dce-js")
 }
 
 repositories {
@@ -42,7 +41,7 @@ dependencies {
 val compileKotlin2Js: Kotlin2JsCompile by tasks
 
 compileKotlin2Js.kotlinOptions {
-    sourceMap = true
+    sourceMap = !prod
     metaInfo = true
     freeCompilerArgs = listOf("-Xcoroutines=enable")
     outputFile = "${project.buildDir.path}/js/index.js"
@@ -51,7 +50,7 @@ compileKotlin2Js.kotlinOptions {
 }
 
 configure<KotlinFrontendExtension>{
-    sourceMaps = true
+    sourceMaps = !prod
 
     configure<NpmExtension> {
         replaceVersion("kotlinx-html-js", "0.6.4")
@@ -64,20 +63,14 @@ configure<KotlinFrontendExtension>{
         dependency("react-redux", "5.0.6")
         dependency("redux-thunk", "2.2.0")
         dependency("redux-devtools-extension", "2.13.2")
+        dependency("lodash", "4.17.4")
         devDependency("source-map-loader")
     }
 
     bundle("webpack", delegateClosureOf<WebPackExtension> {
-        publicPath = "/frontend/"
+        publicPath = "/static/"
         port = 3000
         proxyUrl = "http://localhost:8080"
         stats = "verbose"
     })
-}
-
-if (prod) {
-    val build by tasks
-    val bundle by tasks
-    build.dependsOn("runDceKotlinJs")
-    bundle.dependsOn("runDceKotlinJs")
 }

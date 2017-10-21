@@ -32,6 +32,7 @@ fun main(args: Array<String>) {
         reduxStore.dispatch(ReduxAction(ActionType.HASH_CHANGE, HashChange(hash)))
     })
     reduxStore.dispatch(ReduxAction(ActionType.HASH_CHANGE, HashChange(window.location.hash.substring(1))))
+    reduxStore.dispatch(ReduxAction(ActionType.POPULATE_PROJECTS, PopulateProject(grabData())))
     reduxStore.doDispatch(fetchData())
     render()
 }
