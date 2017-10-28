@@ -11,13 +11,22 @@ import react.dom.ReactDOMBuilder
 import react.dom.ReactDOMStatelessComponent
 import redux.connect
 
+val projectList =
+    connect<ProjectList.Props, ReduxStore>(
+        { state: ReduxStore, _ ->
+            jsObject {
+                items = state.projectList.asList()
+                isSpinning = state.isSpinning
+            }
+        })
+
 class ProjectList : ReactDOMStatelessComponent<ProjectList.Props>() {
     companion object : ReactComponentStatelessSpec<ProjectList, Props>
 
     override fun ReactDOMBuilder.render() {
-        if(props.isSpinning){
-            Spinner{}
-        } else{
+        if (props.isSpinning) {
+            Spinner {}
+        } else {
             div(classes = "container") {
                 div(classes = "row") {
                     div(classes = "col-12") {

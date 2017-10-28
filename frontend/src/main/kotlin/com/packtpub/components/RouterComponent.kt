@@ -15,6 +15,7 @@ import react.ReactComponentStatelessSpec
 import react.dom.ReactDOMBuilder
 import react.dom.ReactDOMStatelessComponent
 import redux.ReduxAction
+import redux.asConnectedComponent
 import redux.connect
 
 val routerComponent =
@@ -54,14 +55,9 @@ class RouterComponent : ReactDOMStatelessComponent<RouterComponent.Props>() {
                     clear = props.clearAction
                     project = props.currentProject
                 }
-            else   ->
-                ProjectList {
-                    items = props.projectList.asList()
-                    isSpinning = props.isSpinning
-                    action = {
-                        println("Do nothing")
-                    }
-                }
+            else   -> {
+                ProjectList.asConnectedComponent(projectList).invoke()
+            }
         }
     }
 

@@ -21,7 +21,7 @@ fun main(args: Array<String>) {
         ReactDOM.render(container) {
             ProviderComponent {
                 store = reduxStore
-                children = RouterComponent.asConnectedComponent(routerComponent)
+                children = RouterComponent.asConnectedElement(routerComponent)
             }
 
         }
