@@ -1,6 +1,6 @@
 plugins {
-    id("org.jetbrains.kotlin.plugin.spring") version "1.1.4-3"
-    id("org.jetbrains.kotlin.plugin.jpa") version "1.1.4-3"
+    id("org.jetbrains.kotlin.plugin.spring") version "1.1.51"
+    id("org.jetbrains.kotlin.plugin.jpa") version "1.1.51"
 }
 
 dependencies {
