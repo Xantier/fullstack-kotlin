@@ -74,3 +74,19 @@ configure<KotlinFrontendExtension>{
         stats = "verbose"
     })
 }
+task("copyResources"){
+    doLast {
+        copy {
+            from("build/bundle")
+            into("../backend/api/build/resources/main/static")
+        }
+        copy {
+            from("build/bundle")
+            into("../backend/api/out/production/resources/static")
+        }
+    }
+}
+
+val build by tasks
+build.dependsOn("bundle")
+build.dependsOn("copyResources")
