@@ -6,7 +6,7 @@ import kotlinx.html.*
 import kotlinx.html.stream.createHTML
 
 
-fun index(header: String, projects: List<ProjectView>): String {
+fun index(@Suppress("UNUSED_PARAMETER") header: String, @Suppress("UNUSED_PARAMETER") projects: List<ProjectView>): String {
     return createHTML(true).html {
         head {
             title = "Full Stack Kotlin"

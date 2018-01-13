@@ -9,8 +9,8 @@ import reactor.core.publisher.Mono
 import reactor.core.publisher.toMono
 
 
-fun BeanDefinitionDsl.securityBeans(paths: ServerHttpSecurity.AuthorizeExchangeBuilder
-.(SecurityService) -> ServerHttpSecurity.AuthorizeExchangeBuilder) {
+fun BeanDefinitionDsl.securityBeans(paths: ServerHttpSecurity.AuthorizeExchangeSpec
+.(SecurityService) -> ServerHttpSecurity.AuthorizeExchangeSpec) {
     bean<UserRepository>()
     bean<UserService> {
         UserServiceImpl(ref())

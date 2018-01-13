@@ -1,7 +1,6 @@
 plugins {
-    val kotlinVersion = "1.1.51"
-    id("org.jetbrains.kotlin.plugin.spring") version kotlinVersion
-    id("org.jetbrains.kotlin.plugin.jpa") version kotlinVersion
+    id("org.jetbrains.kotlin.plugin.spring") version "1.2.10"
+    id("org.jetbrains.kotlin.plugin.jpa") version "1.2.10"
 }
 
 dependencies {
