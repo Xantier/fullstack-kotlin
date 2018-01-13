@@ -1,7 +1,7 @@
 package com.packtpub
 
 import org.springframework.context.support.BeanDefinitionDsl
-import org.springframework.security.authentication.ReactiveAuthenticationManager
+import org.springframework.security.authentication.UserDetailsRepositoryReactiveAuthenticationManager
 import org.springframework.security.config.web.server.ServerHttpSecurity
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService
 import org.springframework.security.web.server.SecurityWebFilterChain
@@ -33,7 +33,7 @@ fun BeanDefinitionDsl.securityBeans(paths: ServerHttpSecurity.AuthorizeExchangeS
             .paths(ref())
             .anyExchange().authenticated()
             .and()
-            .authenticationManager(ReactiveAuthenticationManager(ref()))
+            .authenticationManager(UserDetailsRepositoryReactiveAuthenticationManager(ref()))
             .formLogin()
             .and()
             .build()
