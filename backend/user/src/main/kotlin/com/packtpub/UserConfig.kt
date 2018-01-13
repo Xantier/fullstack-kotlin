@@ -14,7 +14,6 @@ fun BeanDefinitionDsl.securityBeans() {
             .pathMatchers(HttpMethod.POST, "/api/projects/**").hasRole("ADMIN")
             .anyExchange().authenticated()
             .and()
-            //.authenticationManager({ Mono.empty() })
             .build()
     }
 }
