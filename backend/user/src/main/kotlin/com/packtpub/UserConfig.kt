@@ -1,16 +1,16 @@
 package com.packtpub
 
 import org.springframework.context.support.BeanDefinitionDsl
-import org.springframework.security.authentication.UserDetailsRepositoryAuthenticationManager
-import org.springframework.security.config.web.server.HttpSecurity
-import org.springframework.security.core.userdetails.UserDetailsRepository
+import org.springframework.security.authentication.ReactiveAuthenticationManager
+import org.springframework.security.config.web.server.ServerHttpSecurity
+import org.springframework.security.core.userdetails.ReactiveUserDetailsService
 import org.springframework.security.web.server.SecurityWebFilterChain
 import reactor.core.publisher.Mono
 import reactor.core.publisher.toMono
 
 
-fun BeanDefinitionDsl.securityBeans(paths: HttpSecurity.AuthorizeExchangeBuilder
-.(SecurityService) -> HttpSecurity.AuthorizeExchangeBuilder) {
+fun BeanDefinitionDsl.securityBeans(paths: ServerHttpSecurity.AuthorizeExchangeSpec
+.(SecurityService) -> ServerHttpSecurity.AuthorizeExchangeSpec) {
     bean<UserRepository>()
     bean<UserService> {
         UserServiceImpl(ref())
@@ -19,7 +19,7 @@ fun BeanDefinitionDsl.securityBeans(paths: HttpSecurity.AuthorizeExchangeBuilder
         SecurityServiceImpl()
     }
     bean {
-        UserDetailsRepository { username ->
+        ReactiveUserDetailsService { username ->
             ref<UserService>().getUserByName(username)
                 ?.toUserDetails()
                 ?.toMono()
@@ -29,11 +29,11 @@ fun BeanDefinitionDsl.securityBeans(paths: HttpSecurity.AuthorizeExchangeBuilder
         }
     }
     bean<SecurityWebFilterChain> {
-        HttpSecurity.http().authorizeExchange()
+        ServerHttpSecurity.http().authorizeExchange()
             .paths(ref())
             .anyExchange().authenticated()
             .and()
-            .authenticationManager(UserDetailsRepositoryAuthenticationManager(ref()))
+            .authenticationManager(ReactiveAuthenticationManager(ref()))
             .formLogin()
             .and()
             .build()

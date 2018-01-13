@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 
 plugins {
-    kotlin("jvm", "1.1.4-3")
+    kotlin("jvm") version "1.2.10"
 }
 
 buildscript {
@@ -27,7 +27,7 @@ subprojects {
     }
 
     plugins {
-        kotlin("jvm", kotlinVersion)
+        kotlin("jvm") version kotlinVersion
     }
 
     apply {
