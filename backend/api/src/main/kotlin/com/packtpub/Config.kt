@@ -18,11 +18,11 @@ fun main(args: Array<String>) {
     val application = SpringApplication(Config::class.java)
     application.addInitializers(ApplicationContextInitializer<GenericApplicationContext> { ctx ->
         beans {
-            bean { ViewRoutes(it.ref()) }
-            bean { ApiHandler(it.ref(), it.ref()) }
-            bean { ApiRoutes(it.ref()) }
+            bean { ViewRoutes(ref()) }
+            bean { ApiHandler(ref(), ref()) }
+            bean { ApiRoutes(ref()) }
             bean<ExceptionHandler>()
-        }(ctx)
+        }.initialize(ctx)
     })
     application.run(*args)
 }
