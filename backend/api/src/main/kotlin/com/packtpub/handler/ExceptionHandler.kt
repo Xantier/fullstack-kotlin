@@ -35,7 +35,7 @@ class ExceptionHandler : WebExceptionHandler, WithLogging() {
                 Validatable(genericError = throwable.localizedMessage))
     }
 
-    private fun respond(httpStatus: HttpStatus, body: Any?):
+    private fun respond(httpStatus: HttpStatus, body: Any):
         Mono<ServerResponse> =
         ServerResponse
             .status(httpStatus)
