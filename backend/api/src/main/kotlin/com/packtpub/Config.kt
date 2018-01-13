@@ -16,9 +16,9 @@ fun main(args: Array<String>) {
     val application = SpringApplication(Config::class.java)
     application.addInitializers(ApplicationContextInitializer<GenericApplicationContext> { ctx ->
         beans {
-            bean { ViewRoutes(it.ref()) }
-            bean { ApiRoutes(it.ref(), it.ref()) }
-        }(ctx)
+            bean { ViewRoutes(ref()) }
+            bean { ApiRoutes(ref(), ref()) }
+        }.initialize(ctx)
     })
     application.run(*args)
 }
