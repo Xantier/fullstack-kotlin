@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-    val springBootVersion: String = parent.properties["springBootVersion"] as String
+    val springBootVersion: String = parent!!.properties["springBootVersion"] as String
     compile("org.springframework.boot:spring-boot-starter:$springBootVersion")
 }
