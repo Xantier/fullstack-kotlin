@@ -1,7 +1,6 @@
 package com.packtpub
 
 import org.springframework.context.support.BeanDefinitionDsl
-import org.springframework.security.authentication.ReactiveAuthenticationManager
 import org.springframework.security.authentication.UserDetailsRepositoryReactiveAuthenticationManager
 import org.springframework.security.config.web.server.ServerHttpSecurity
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService
