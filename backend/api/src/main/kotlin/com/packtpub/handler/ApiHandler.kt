@@ -32,6 +32,7 @@ class ApiHandler(private val validator: Validator,
                 }
             }
 
+    @Suppress("UNUSED_PARAMETER")
     fun getProjects(req: ServerRequest) =
         ServerResponse.ok().body(
             Mono.just(projectService.fetchProjects().map { it.toDto() })
@@ -47,6 +48,7 @@ class ApiHandler(private val validator: Validator,
         }
     }
 
+    @Suppress("UNUSED_PARAMETER")
     fun getOwners(req: ServerRequest): Mono<ServerResponse> =
         ServerResponse.ok().body(Mono.just(projectService.fetchAllOwners()))
 
