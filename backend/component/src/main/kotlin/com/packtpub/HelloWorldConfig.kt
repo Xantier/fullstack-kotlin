@@ -7,6 +7,6 @@ class HelloWorldConfig(ctx: GenericApplicationContext){
     init {
         beans {
             bean<HelloWorld>()
-        }.invoke(ctx)
+        }.initialize(ctx)
     }
 }

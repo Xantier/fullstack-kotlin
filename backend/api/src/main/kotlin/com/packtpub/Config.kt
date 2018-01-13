@@ -15,7 +15,7 @@ fun main(args: Array<String>){
     application.addInitializers(ApplicationContextInitializer<GenericApplicationContext> { ctx ->
         beans{
             bean<HelloWorldConfig>()
-        }(ctx)
+        }.initialize(ctx)
     })
     application.run(*args)
 }
