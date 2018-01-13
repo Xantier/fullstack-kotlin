@@ -1,12 +1,10 @@
+import org.gradle.api.file.CopySpec
 import org.gradle.api.tasks.bundling.Jar
-import org.gradle.kotlin.dsl.compile
-import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.kotlin
-import org.gradle.kotlin.dsl.withType
+import org.gradle.kotlin.dsl.*
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm")
+    kotlin("jvm") version embeddedKotlinVersion
 }
 
 dependencies {
