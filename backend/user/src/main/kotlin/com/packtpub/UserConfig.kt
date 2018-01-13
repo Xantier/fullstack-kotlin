@@ -2,8 +2,8 @@ package com.packtpub
 
 import org.springframework.context.support.BeanDefinitionDsl
 import org.springframework.http.HttpMethod
-import org.springframework.security.config.web.server.HttpSecurity
-import org.springframework.security.core.userdetails.UserDetailsRepository
+import org.springframework.security.config.web.server.ServerHttpSecurity
+import org.springframework.security.core.userdetails.ReactiveUserDetailsService
 import org.springframework.security.web.server.SecurityWebFilterChain
 import reactor.core.publisher.Mono
 import reactor.core.publisher.toMono
@@ -16,7 +16,7 @@ fun BeanDefinitionDsl.securityBeans() {
     }
 
     bean {
-        UserDetailsRepository { username ->
+        ReactiveUserDetailsService{ username ->
             ref<UserService>().getUserByName(username)
                 ?.toUserDetails()
                 ?.toMono()
@@ -26,7 +26,7 @@ fun BeanDefinitionDsl.securityBeans() {
         }
     }
     bean<SecurityWebFilterChain>{
-        HttpSecurity.http().authorizeExchange()
+        ServerHttpSecurity.http().authorizeExchange()
             .pathMatchers(HttpMethod.GET, "/api/projects/**").permitAll()
             .pathMatchers(HttpMethod.GET, "/projects/**").hasRole("ADMIN")
             .pathMatchers(HttpMethod.POST, "/api/projects/**").hasRole("ADMIN")
