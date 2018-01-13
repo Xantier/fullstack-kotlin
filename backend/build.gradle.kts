@@ -8,7 +8,7 @@ buildscript {
     }
 
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.0.M3")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.0.M7")
     }
 }
 
@@ -19,7 +19,7 @@ repositories {
 }
 
 plugins {
-    kotlin("jvm")
+    kotlin("jvm") version embeddedKotlinVersion
     id("io.spring.dependency-management") version "1.0.3.RELEASE"
     id("org.jetbrains.kotlin.plugin.spring") version embeddedKotlinVersion
 }
