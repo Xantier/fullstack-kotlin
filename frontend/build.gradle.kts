@@ -55,7 +55,7 @@ configure<KotlinFrontendExtension>{
     configure<NpmExtension> {
         replaceVersion("kotlinx-html-js", "0.6.4")
         replaceVersion("kotlinx-html-shared", "0.6.4")
-        replaceVersion("kotlin-js-library", "1.1.51")
+        replaceVersion("kotlin-js-library", "1.2.10")
 
         dependency("react", "16.0.0")
         dependency("react-dom", "16.0.0")
