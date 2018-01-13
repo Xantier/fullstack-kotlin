@@ -1,13 +1,14 @@
 package com.packtpub.util
 
-import org.apache.log4j.Logger
+import org.apache.logging.log4j.Logger
+import org.apache.logging.log4j.LogManager
 import kotlin.reflect.KClass
 import kotlin.reflect.full.companionObject
 
 
 // Return logger for Java class, if companion object fix the name
 fun <T : Any> logger(forClass: Class<T>): Logger {
-    return Logger.getLogger(unwrapCompanionClass(forClass).name)
+    return LogManager.getLogger(unwrapCompanionClass(forClass).name)
 }
 
 // unwrap companion class to enclosing class given a Java Class
